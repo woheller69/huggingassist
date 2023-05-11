@@ -1,9 +1,9 @@
 <pre>Send a coffee to woheller69@t-online.de 
 <a href= "https://www.paypal.com/signin"><img  align="left" src="https://www.paypalobjects.com/webstatic/de_DE/i/de-pp-logo-150px.png"></a></pre>
 
-# huggingWrap
+# huggingAssist
 
-huggingWrap is a simple WebView wrapper for huggingChat
+huggingAssist is a simple WebView wrapper for huggingChat
 
 ## License
 
