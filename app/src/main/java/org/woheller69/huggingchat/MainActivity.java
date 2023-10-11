@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         chatWebView.setWebChromeClient(new WebChromeClient(){
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                if (consoleMessage.message().contains("NotAllowedError: Write permission denied.")) {  //this error occurs when user copies to clipboard
+                if (consoleMessage.message().contains("NotAllowedError: Write permission denied.") || consoleMessage.message().contains("DOMException")) {  //this error occurs when user copies to clipboard
                     Toast.makeText(context, R.string.error_copy,Toast.LENGTH_LONG).show();
                     return true;
                 }
@@ -154,8 +154,9 @@ public class MainActivity extends Activity {
         //Change the User-Agent
         chatWebSettings.setUserAgentString("Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.79 Mobile Safari/537.36");
 
-        //Load Google Maps
+        //Load HuggingChat
         chatWebView.loadUrl(urlToLoad);
+        if (GithubStar.shouldShowStarDialog(this)) GithubStar.starDialog(this,"https://github.com/woheller69/huggingassist");
     }
 
     @Override
