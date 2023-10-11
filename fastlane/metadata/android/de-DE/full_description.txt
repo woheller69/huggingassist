@@ -1,0 +1,1 @@
+huggingAssist ist ein WebView-Wrapper für HuggingChat. Die App blockiert alle URLs, die für die Funktion nicht essentiell sind.
