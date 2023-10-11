@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -31,6 +32,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
@@ -76,7 +79,16 @@ public class MainActivity extends Activity {
         //Restrict what gets loaded
         initURLs();
 
-        chatWebView.setWebChromeClient(new WebChromeClient(){  });  //needed to share link
+        chatWebView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                if (consoleMessage.message().contains("NotAllowedError: Write permission denied.")) {  //this error occurs when user copies to clipboard
+                    Toast.makeText(context, R.string.error_copy,Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        });  //needed to share link
 
         chatWebView.setWebViewClient(new WebViewClient() {
             //Keep these in sync!
