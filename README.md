@@ -11,7 +11,7 @@ height="80">](https://f-droid.org/packages/org.woheller69.hugassist/)
 
 ## License
 
-This app is licensed under the GPLv3.
+This app is licensed under the GPLv3, © woheller69.
 
 The app uses:
 - Parts from GMaps WV (https://gitlab.com/divested-mobile/maps) which is licensed under the GPLv3

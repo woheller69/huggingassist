@@ -15,7 +15,6 @@ package org.woheller69.huggingchat;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +31,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    private SwipeTouchListener swipeTouchListener;
+    private Button resetButton = null;
     private WebView chatWebView = null;
     private WebSettings chatWebSettings = null;
     private CookieManager chatCookieManager = null;
@@ -50,12 +52,26 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         if (chatCookieManager!=null) chatCookieManager.flush();
+        swipeTouchListener = null;
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        swipeTouchListener = new SwipeTouchListener(context) {
+            public void onSwipeBottom() {
+                if (!chatWebView.canScrollVertically(0)) {
+                    resetButton.setVisibility(View.VISIBLE);
+                }
+            }
+            public void onSwipeTop(){
+                resetButton.setVisibility(View.GONE);
+            }
+        };
+
+        chatWebView.setOnTouchListener(swipeTouchListener);
     }
 
     @Override
@@ -70,6 +86,7 @@ public class MainActivity extends Activity {
 
         //Create the WebView
         chatWebView = findViewById(R.id.chatWebView);
+        resetButton = findViewById(R.id.resetButton);
 
         //Set cookie options
         chatCookieManager = CookieManager.getInstance();
