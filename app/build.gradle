@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.woheller69.hugassist"
         minSdk 21
-        targetSdk 31
-        versionCode 16
-        versionName "1.6"
+        targetSdk 34
+        versionCode 17
+        versionName "1.7"
     }
 
     buildTypes {

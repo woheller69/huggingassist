@@ -13,8 +13,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 package org.woheller69.huggingchat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -48,6 +53,9 @@ public class MainActivity extends Activity {
     private String urlToLoad = "https://huggingface.co/chat/";
 
     private static final ArrayList<String> allowedDomains = new ArrayList<String>();
+
+    private ValueCallback<Uri[]> mUploadMessage;
+    private final static int FILE_CHOOSER_REQUEST_CODE = 1;
 
     @Override
     protected void onPause() {
@@ -104,6 +112,27 @@ public class MainActivity extends Activity {
                     return true;
                 }
                 return false;
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                    }
+                }
+                if (mUploadMessage != null) {
+                    mUploadMessage.onReceiveValue(null);
+                    mUploadMessage = null;
+                }
+
+                mUploadMessage = filePathCallback;
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                startActivityForResult(intent, FILE_CHOOSER_REQUEST_CODE);
+                return true;
             }
         });  //needed to share link
 
@@ -219,4 +248,25 @@ public class MainActivity extends Activity {
         //Allowed Domains
         allowedDomains.add("huggingface.co");
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == FILE_CHOOSER_REQUEST_CODE) {
+            if (mUploadMessage == null) return;
+            Uri[] result = null;
+            if (resultCode == Activity.RESULT_OK) {
+                if (intent != null) {
+                    String dataString = intent.getDataString();
+                    if (dataString != null) {
+                        result = new Uri[]{Uri.parse(dataString)};
+                    }
+                }
+            }
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+        }
+    }
+
 }
