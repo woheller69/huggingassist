@@ -13,21 +13,31 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 package org.woheller69.huggingchat;
 
+import static android.webkit.WebView.HitTestResult.IMAGE_TYPE;
+import static android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
+
 import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
+import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -103,6 +113,7 @@ public class MainActivity extends Activity {
 
         //Restrict what gets loaded
         initURLs();
+        registerForContextMenu(chatWebView);
 
         chatWebView.setWebChromeClient(new WebChromeClient(){
             @Override
@@ -266,6 +277,42 @@ public class MainActivity extends Activity {
             }
             mUploadMessage.onReceiveValue(result);
             mUploadMessage = null;
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        WebView.HitTestResult result = chatWebView.getHitTestResult();
+        String url="";
+        if (result.getExtra() != null) {
+            if (result.getType() == SRC_IMAGE_ANCHOR_TYPE) {
+                // Create a background thread that has a Looper
+                HandlerThread handlerThread = new HandlerThread("HandlerThread");
+                handlerThread.start();
+                // Create a handler to execute tasks in the background thread.
+                Handler backgroundHandler = new Handler(handlerThread.getLooper());
+                Message msg = backgroundHandler.obtainMessage();
+                chatWebView.requestFocusNodeHref(msg);
+                url = (String) msg.getData().get("src");
+            }  else if (result.getType() == IMAGE_TYPE) {
+                url = result.getExtra();
+            }
+            if (url != null) {
+                Toast.makeText(this,getString(R.string.downloading),Toast.LENGTH_LONG).show();
+                String filename = URLUtil.guessFileName(url, null, null);
+                Uri source = Uri.parse(url);
+                DownloadManager.Request request = new DownloadManager.Request(source);
+                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                request.addRequestHeader("Accept", "text/html, application/xhtml+xml, *" + "/" + "*");
+                request.addRequestHeader("Accept-Language", "en-US,en;q=0.7,he;q=0.3");
+                request.addRequestHeader("Referer", url);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                assert dm != null;
+                dm.enqueue(request);
+            }
         }
     }
 

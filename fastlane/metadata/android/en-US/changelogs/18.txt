@@ -1,0 +1,1 @@
+Allow download of images via long click
