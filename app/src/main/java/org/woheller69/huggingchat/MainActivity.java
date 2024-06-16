@@ -258,6 +258,7 @@ public class MainActivity extends Activity {
     private static void initURLs() {
         //Allowed Domains
         allowedDomains.add("huggingface.co");
+        allowedDomains.add("image.pollinations.ai");
     }
 
 
