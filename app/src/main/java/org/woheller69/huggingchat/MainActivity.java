@@ -159,8 +159,8 @@ public class MainActivity extends Activity {
                     return new WebResourceResponse("text/javascript", "UTF-8", null); //Deny URLs that aren't HTTPS
                 }
                 boolean allowed = false;
-                for (String url : allowedDomains) {
-                    if (request.getUrl().getHost().equals(url)) {
+                for (String domain : allowedDomains) {
+                    if (request.getUrl().getHost().endsWith(domain)) {
                         allowed = true;
                     }
                 }
@@ -181,8 +181,8 @@ public class MainActivity extends Activity {
                     return true; //Deny URLs that aren't HTTPS
                 }
                 boolean allowed = false;
-                for (String url : allowedDomains) {
-                    if (request.getUrl().getHost().equals(url)) {
+                for (String domain : allowedDomains) {
+                    if (request.getUrl().getHost().endsWith(domain)) {
                         allowed = true;
                     }
                 }
@@ -258,7 +258,7 @@ public class MainActivity extends Activity {
     private static void initURLs() {
         //Allowed Domains
         allowedDomains.add("huggingface.co");
-        allowedDomains.add("image.pollinations.ai");
+        allowedDomains.add("pollinations.ai");
     }
 
 
@@ -299,9 +299,9 @@ public class MainActivity extends Activity {
             }  else if (result.getType() == IMAGE_TYPE) {
                 url = result.getExtra();
             }
-            if (url != null) {
+            if (url != null && !url.isEmpty() &&!url.contains("/avatar.jpg?")) {
                 Toast.makeText(this,getString(R.string.downloading),Toast.LENGTH_LONG).show();
-                String filename = URLUtil.guessFileName(url, null, null);
+                String filename = URLUtil.guessFileName(url, null, "image/jpeg");
                 Uri source = Uri.parse(url);
                 DownloadManager.Request request = new DownloadManager.Request(source);
                 request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
