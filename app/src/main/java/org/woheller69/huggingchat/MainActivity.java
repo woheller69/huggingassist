@@ -209,7 +209,7 @@ public class MainActivity extends Activity {
         chatWebSettings.setDomStorageEnabled(true);
         chatWebSettings.setSaveFormData(false);
         //Change the User-Agent
-        chatWebSettings.setUserAgentString("Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.79 Mobile Safari/537.36");
+        chatWebSettings.setUserAgentString("Mozilla/5.0 (Linux; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.79 Mobile Safari/537.36");
 
         //Load HuggingChat
         chatWebView.loadUrl(urlToLoad);
