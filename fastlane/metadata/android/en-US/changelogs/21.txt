@@ -1,0 +1,2 @@
+Remove "Android" from user agent string
+to block ad for HuggingChat app.
