@@ -3,7 +3,9 @@
 
 # huggingAssist
 
-huggingAssist is a simple WebView wrapper for huggingChat
+huggingAssist is a simple WebView wrapper for huggingChat.
+It blocks all URLs that are not essential for functioning.
+Please use an external browser for initial sign-up.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"

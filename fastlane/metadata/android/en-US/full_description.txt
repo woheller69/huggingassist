@@ -1,1 +1,3 @@
-huggingAssist is a simple WebView wrapper for HuggingChat. It blocks all URLs that are not essential for functioning.
+huggingAssist is a simple WebView wrapper for HuggingChat.
+It blocks all URLs that are not essential for functioning.
+Please use an external browser for initial sign-up.

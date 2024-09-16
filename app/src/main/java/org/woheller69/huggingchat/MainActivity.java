@@ -170,6 +170,7 @@ public class MainActivity extends Activity {
                 }
                 if (!allowed) {
                     Log.d(TAG, "[shouldInterceptRequest][NOT ON ALLOWLIST] Blocked access to " + request.getUrl().getHost());
+                    Log.d(TAG, "[shouldInterceptRequest][NOT ON ALLOWLIST] Blocked access to " + request.getUrl());
                     return new WebResourceResponse("text/javascript", "UTF-8", null); //Deny URLs not on ALLOWLIST
                 }
                 return null;
@@ -263,6 +264,7 @@ public class MainActivity extends Activity {
     private static void initURLs() {
         //Allowed Domains
         allowedDomains.add("huggingface.co");
+        allowedDomains.add("huggingface.co.");
         allowedDomains.add("pollinations.ai");
     }
 
