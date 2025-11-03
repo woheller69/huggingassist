@@ -12,10 +12,6 @@ huggingAssist is a simple WebView wrapper for huggingChat.
 It blocks all URLs that are not essential for functioning.
 Please use an external browser for initial sign-up.
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Get it on F-Droid"
-height="80">](https://f-droid.org/packages/org.woheller69.hugassist/)
-
 ## License
 
 This app is licensed under the GPLv3, © woheller69.

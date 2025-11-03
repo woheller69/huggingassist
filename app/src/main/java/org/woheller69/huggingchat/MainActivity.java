@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
     private CookieManager chatCookieManager = null;
     private final Context context = this;
     private String TAG ="huggingChat";
-    private String urlToLoad = "https://huggingface.co/chat/";
+    private String urlToLoad = "https://mcpchat.scira.ai/";
 
     private static final ArrayList<String> allowedDomains = new ArrayList<String>();
 
@@ -263,9 +263,8 @@ public class MainActivity extends Activity {
 
     private static void initURLs() {
         //Allowed Domains
-        allowedDomains.add("huggingface.co");
-        allowedDomains.add("huggingface.co.");
-        allowedDomains.add("pollinations.ai");
+        allowedDomains.add("mcpchat.scira.ai");
+
     }
 
 

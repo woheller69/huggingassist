@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">huggingAssist</string>
+    <string name="app_name">sciraAssist</string>
     <string name="error_copy">Please select and copy text manually</string>
     <!-- StarDialog -->
     <string name="dialog_OK_button">OK</string>
